@@ -1,9 +1,18 @@
+require('dotenv').config();
 const express = require('express');
 const expressGraphql = require('express-graphql');
 const { buildSchema, GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLString, GraphQLInt } = require('graphql') ;
 const PORT = process.env.PORT || 3000;
-const joinMonster = require('join-monster');
+const joinMonster = require('join-monster').default;
 
+const pg = require('pg');
+
+const connString = process.env.CONNSTRING;
+const client = new pg.Client({
+    connectionString: connString
+});
+
+client.connect();
 
 const Day = new GraphQLObjectType ({
     name: 'Day',
@@ -48,12 +57,9 @@ const QueryRoot = new GraphQLObjectType({
                 }
             },
             resolve: (parent, args, context, resolveInfo) => {
-                console.log(args);
-                if (args.week) {
-                    return days;
-                } else {
-                    return null;
-                }
+                return joinMonster(resolveInfo, {}, sql => {
+                    return client.query(sql);
+                }, {dialect: 'pg'});
             }
         }
     })
@@ -65,61 +71,17 @@ const schema = new GraphQLSchema({
 });
 
 // TODO hook me up to dat posgres ish!
+/*
+    x - grab data from postgres db instead of arr
+    - add arguments for days:
+        - month
+    - add types:
+        - task
+        - category?
 
-// faux data
-const days = [
-    {
-        id: 1,
-        date: '03/29/12',
-        week: 1,
-        month: 1
-    },
-    {
-        id: 2,
-        date: '03/30/12',
-        week: 1,
-        month: 1
-    },
-    {
-        id: 3,
-        date: '03/31/12',
-        week: 1,
-        month: 1
-    },
-    {
-        id: 4,
-        date: '03/31/12',
-        week: 2,
-        month: 1
-    }
-];
 
-// the resolver that resolves queries
-// root is an object that
-    // 1. has keys that match the Querys in the schema
-    // 2. the values are functions that do the work to get/give the data
-    // 3. will be passed to our GraphQL middleware
+*/
 
-// const root = {
-//     day: getDay,
-//     days: getDays
-// };
-
-// function getDay (args) {
-//     return days.filter(day => day.id === args.id)[0];
-// }
-
-// function getDays (args) {
-//     if (args.week) {
-//         return days.filter(day => day.week === args.week);
-//     } else if (args.month) {
-//         return days.filter(day => day.month === args.month);
-//     } else {
-//         return days;
-//     }
-// }
-
- 
 
 
 const app = express();
