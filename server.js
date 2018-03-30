@@ -14,7 +14,25 @@ const client = new pg.Client({
 
 client.connect();
 
-const Day = new GraphQLObjectType ({
+const Activity = new GraphQLObjectType({
+    name: 'Activity',
+    sqlTable: 'operations.activity',
+    uniqueKey: 'id',
+    fields: () => ({
+        category: {
+            type: GraphQLString
+        },
+        description: {
+           type: GraphQLString 
+        },
+        day: {
+            type: GraphQLInt,
+            sqlColumn: 'day_id'
+        }
+    })
+});
+
+const Day = new GraphQLObjectType({
     name: 'Day',
     sqlTable: 'operations.day',
     uniqueKey: 'id',
@@ -33,7 +51,14 @@ const Day = new GraphQLObjectType ({
         month: {
             sqlColumn: 'month_id',
             type: GraphQLInt
+        },
+        activities: {
+            type: GraphQLList(Activity),
+            sqlJoin: (dayTable, activityTable, args) => {
+                return `${dayTable}.id = ${activityTable}.day_id`;
+            }
         }
+
     })
 });
 
