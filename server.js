@@ -50,11 +50,25 @@ const QueryRoot = new GraphQLObjectType({
         days: {
             type: new GraphQLList(Day),
             args: {
+                month: {
+                    type: GraphQLInt, // should this actually be the month instelf? a GraphQL Type
+                    defaultValue: 0,
+                    description: 'The unique month id (I think)'
+                },
                 week: {
                     type: GraphQLInt,
-                    defaultValue: 1,
-                    description: 'what the week'
+                    defaultValue: 0,
+                    description: 'The unique week id'
                 }
+            },
+            where: (daysTable, args, context) => {
+                const {week, month} = args;
+                if (week) return `${daysTable}.week_id = ${week}`;
+                if (month) return `${daysTable}.month_id = ${month}`;
+
+                // would you ever want to query a week and a month that aren't related?
+                // for example: days(week:4, month:8)
+                // would that even work??? there would never be that combo
             },
             resolve: (parent, args, context, resolveInfo) => {
                 return joinMonster(resolveInfo, {}, sql => {
@@ -73,13 +87,13 @@ const schema = new GraphQLSchema({
 // TODO hook me up to dat posgres ish!
 /*
     x - grab data from postgres db instead of arr
-    - add arguments for days:
-        - month
-    - add types:
-        - task
-        - category?
-
-
+    x - add arguments for days:
+        x - month
+    - add more day properties:
+        - activities
+            - Activity type
+        - expenses
+            - Expense type
 */
 
 
