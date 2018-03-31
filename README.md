@@ -22,3 +22,26 @@ To track expsenses, food and perishable inventory, and daily accomplishments.
     - https://svelte.technology/guide
 1. Bugginess
     1. sticky menu header thing is pushed up by grid
+
+### Stack
+- Languages and libraries
+    - HTML
+    - CSS
+    - Vanilla JavaScript
+    - PostgreSQL
+    - NPM packages (of note)
+        - Express
+        - pg
+        - join-monster
+        - GraphQL
+        - express-graphql
+- Development tools
+    - VS Code
+    - PSQL
+    - GraphiQL
+    - live-server (npm module)
+    - NPM packages (of note)
+        - nodemon
+        - dotenv
+
+        <!-- rebalance -->

@@ -27,6 +27,13 @@ class App {
 
         this.initView();
         this.displayTotals();
+
+        // get current day, week, month from server
+
+        // get all days data from server
+        // TODO replace with library probably
+        this.fetchDays();
+
     }
 
     initView () {
@@ -35,6 +42,39 @@ class App {
             this.settingsOpen = !this.settingsOpen;
             this.toggleSettings();
         });
+    }
+
+
+    
+//     fetch('https://1jzxrj179.lp.gql.zone/graphql', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ query: '{ posts { title } }' }),
+//   })
+//     .then(res => res.json())
+//     .then(res => console.log(res.data));
+
+    fetchDays () {
+        this.days = new Days();
+        const dataEndPoint = 'http://localhost:3000/graphql'
+        fetch(dataEndPoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                query: `{ 
+                    days {
+                        date
+                        week
+                        activities {
+                            description
+                            category
+                        } 	
+                    }
+                }`
+            })
+        })
+        .then(res => res.json())
+        .then(res => this.days.load(res.data));
     }
 
     toggleSettings () {

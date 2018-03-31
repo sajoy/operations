@@ -115,10 +115,11 @@ const schema = new GraphQLSchema({
     x - add arguments for days:
         x - month
     - add more day properties:
-        - activities
-            - Activity type
+        x - activities
+           x - Activity type
         - expenses
             - Expense type
+    - figure out how to filter day's activities (only specified category)
 */
 
 
