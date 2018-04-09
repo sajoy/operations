@@ -112,10 +112,10 @@ body {
 */
 #calendar {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
-
-.today {
-  grid-column-start: 3; }
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  background-color: var(--lavender-color); }
+  #calendar article:first-child {
+    grid-column-start: 3; }
 
 /*
          day styles
@@ -202,7 +202,8 @@ body {
         expenses section
 */
 [data-content="expenses"] {
-  padding-bottom: 0; }
+  padding-bottom: 0;
+  display: none; }
 
 [data-content="expenses"] button {
   border: none;

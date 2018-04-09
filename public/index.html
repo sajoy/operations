@@ -37,6 +37,9 @@
             </section>
         </section>
         <section id="calendar">
+            <template id="activity-template">
+                <li data-category="category">description</li>
+            </template>
             <template id="day-template">
                 <article class="day" data-week="0" data-month="0">
                     <header>
@@ -44,9 +47,7 @@
                         <h2>MM/DD</h2>
                     </header>
                     <section data-content="tasks">
-                        <ul>
-                            <li data-category="category">description</li>
-                        </ul>
+                        <ul></ul>
                     </section>
                     <section data-content="expenses">
                         <button>$0</button>
