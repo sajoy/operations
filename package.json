@@ -26,6 +26,7 @@
     "express-graphql": "^0.6.12",
     "graphql": "^0.13.2",
     "join-monster": "^2.0.16",
-    "pg": "^7.4.1"
+    "pg": "^7.4.1",
+    "pg-escape": "^0.2.0"
   }
 }

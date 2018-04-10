@@ -1,9 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 const expressGraphql = require('express-graphql');
-const { buildSchema, GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLString, GraphQLInt } = require('graphql') ;
+const { buildSchema, GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLString, GraphQLInt, GraphQLFloat } = require('graphql') ;
 const PORT = process.env.PORT || 3000;
 const joinMonster = require('join-monster').default;
+const escape = require('pg-escape');
 
 const pg = require('pg');
 
@@ -14,11 +15,38 @@ const client = new pg.Client({
 
 client.connect();
 
+const Expense = new GraphQLObjectType({
+    name: 'Expense',
+    sqlTable: 'operations.expense',
+    uniqueKey: 'id',
+    fields: () => ({
+        id: {
+            type: GraphQLInt
+        },
+        category: {
+            type: GraphQLString
+        },
+        description: {
+           type: GraphQLString 
+        },
+        amount: {
+            type: GraphQLString
+        },
+        day: {
+            type: GraphQLInt,
+            sqlColumn: 'day_id'
+        }
+    })
+});
+
 const Activity = new GraphQLObjectType({
     name: 'Activity',
     sqlTable: 'operations.activity',
     uniqueKey: 'id',
     fields: () => ({
+        id: {
+            type: GraphQLInt
+        },
         category: {
             type: GraphQLString
         },
@@ -57,19 +85,102 @@ const Day = new GraphQLObjectType({
             sqlJoin: (dayTable, activityTable, args) => {
                 return `${dayTable}.id = ${activityTable}.day_id`;
             }
+        },
+        expenses: {
+            type: GraphQLList(Expense),
+            sqlJoin: (dayTable, expenseTable, args) => {
+                return `${dayTable}.id = ${expenseTable}.day_id`;
+            }
         }
+    })
+});
 
+const Week = new GraphQLObjectType({
+    name: 'Week',
+    sqlTable: 'operations.week',
+    uniqueKey: 'id',
+    fields: () => ({
+        id: {
+            type: GraphQLInt
+        },
+        days: {
+            type: GraphQLList(Day),
+            sqlJoin: (weekTable, dayTable, args) => {
+                return `${weekTable}.id = ${dayTable}.week_id`;
+            }
+        }
+    })
+});
+
+const Month = new GraphQLObjectType({
+    name: 'Month',
+    sqlTable: 'operations.month',
+    uniqueKey: 'id',
+    fields: () => ({
+        id: {
+            type: GraphQLInt
+        },
+        days: {
+            type: GraphQLList(Day),
+            sqlJoin: (monthTable, dayTable, args) => {
+                return `${monthTable}.id = ${dayTable}.month_id`;
+            }
+        }
     })
 });
 
 const QueryRoot = new GraphQLObjectType({
     name: 'Query',
     fields: () => ({
+        month: {
+            type: Month,
+            args: {
+                id: {
+                    type: GraphQLInt,
+                    description: 'The unique id of the month'
+                }
+            },
+            where: (monthTable, args, context) => {
+                return `${monthTable}.id = ${args.id}`;
+            },
+            resolve: (parent, args, context, resolveInfo) => {
+                return joinMonster(resolveInfo, {}, sql => {
+                    return client.query(sql);
+                }, {dialect: 'pg'});
+            }
+        },
+        week: {
+            type: Week,
+            args: {
+                id: {
+                    type: GraphQLInt,
+                    description: 'The unique id of the week'
+                }
+            },
+            where: (weekTable, args, context) => {
+                return `${weekTable}.id = ${args.id}`;
+            },
+            resolve: (parent, args, context, resolveInfo) => {
+                return joinMonster(resolveInfo, {}, sql => {
+                    return client.query(sql);
+                }, {dialect: 'pg'});
+            }
+        },
         day: {
             type: Day,
+            args: {
+                id: {
+                    type: GraphQLInt,
+                    description: 'The unique id of a day' 
+                }
+            },
+            where: (dayTable, args, context) => {
+                return `${dayTable}.id = ${args.id}`;
+            },
             resolve: (parent, args, context, resolveInfo) => {
-                console.log(args);
-                return 5;
+                return joinMonster(resolveInfo, {}, sql => {
+                    return client.query(sql);
+                }, {dialect: 'pg'})
             }
         },
         days: {
@@ -100,32 +211,56 @@ const QueryRoot = new GraphQLObjectType({
                     return client.query(sql);
                 }, {dialect: 'pg'});
             }
+        },
+        expenses: {
+            type: GraphQLList(Expense),
+            args: {
+                category: {
+                    type: GraphQLString,
+                    description: 'The category of the expense'
+                }
+            },
+            where: (expenseTable, args, context) => {
+                if (!args.category) return null;
+                return escape(`${expenseTable}.category = %L`, args.category);
+            },
+            resolve: (parent, args, context, resolveInfo) => {
+                return joinMonster(resolveInfo, {}, sql => {
+                    return client.query(sql);
+                }, {dialect: 'pg'});
+            }
+        },
+        activities: {
+            type: GraphQLList(Activity),
+            args: {
+                category: {
+                    type: GraphQLString,
+                    description: 'The category of the activity'
+                }
+            },
+            where: (activityTable, args, context) => {
+                if (!args.category) return null;
+                return escape(`${activityTable}.category = %L`, args.category);
+            },
+            resolve: (parent, args, context, resolveInfo) => {
+                return joinMonster(resolveInfo, {}, sql => {
+                    return client.query(sql);
+                }, {dialect: 'pg'});
+            }
         }
     })
 });
 
 const schema = new GraphQLSchema({
-    description: 'idk man pls just work',
+    description: 'Operations data schema',
     query: QueryRoot
 });
 
-// TODO hook me up to dat posgres ish!
-/*
-    x - grab data from postgres db instead of arr
-    x - add arguments for days:
-        x - month
-    - add more day properties:
-        x - activities
-           x - Activity type
-        - expenses
-            - Expense type
-    - figure out how to filter day's activities (only specified category)
-*/
+
 
 
 
 const app = express();
-
 app.use(express.static('./public'));
 
 app.use('/graphql', expressGraphql({
