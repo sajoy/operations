@@ -7,6 +7,8 @@ class Day {
     }
 
     render () {
+        // TODO refactor this huge baby
+
         const calendar = document.querySelector('#calendar');
         const template = document.querySelector('#day-template');       
         const day = document.importNode(template.content, true);
@@ -31,13 +33,17 @@ class Day {
         const expenses = day.querySelector('[data-content="expenses"] ul');
         const expenseTemplate = document.querySelector('#expense-template');
 
+        let total = 0;
         this.expenses.forEach(expense => {
             const ele = document.importNode(expenseTemplate.content, true);
             ele.querySelector('span.dollars').textContent = expense.amount;
             ele.querySelector('p').textContent = expense.description;
             expenses.appendChild(ele);
-        });
 
+
+            total += parseFloat(expense.amount.slice(1));
+        });
+        day.querySelector('button').textContent = `$${total.toFixed(2)}`;
         calendar.prepend(day);
 
         // grab element and update attributes because you can't when its a document fragment

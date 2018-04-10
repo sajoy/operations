@@ -8,7 +8,7 @@ class Totals {
     }
 
     calculate () {
-        const total = this.expenseNodes.reduce((acc, curr) => acc + parseFloat(curr.textContent), 0);
+        const total = this.expenseNodes.reduce((acc, curr) => acc + parseFloat(curr.textContent.slice(1)), 0);
         return total.toFixed(2);
     }
 
@@ -26,14 +26,12 @@ class App {
         this.settingsOpen = false;
 
         this.initView();
-        this.displayTotals();
-
+        
         // get current day, week, month from server
-
+        
         // get all days data from server
         // TODO replace with library probably
         this.fetchDays();
-
     }
 
     initView () {
@@ -71,7 +69,8 @@ class App {
             })
         })
         .then(res => res.json())
-        .then(res => this.days.load(res.data));
+        .then(res => this.days.load(res.data))
+        .then(()=> this.displayTotals())
     }
 
     toggleSettings () {
@@ -89,4 +88,4 @@ class App {
 }
 
 // ??? How to deal with ~time~
-const app = new App(2, 1);
+const app = new App(6, 2);

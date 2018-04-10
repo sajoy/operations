@@ -206,6 +206,9 @@ const QueryRoot = new GraphQLObjectType({
                 // for example: days(week:4, month:8)
                 // would that even work??? there would never be that combo
             },
+            orderBy: {
+                id: 'asc'
+            },
             resolve: (parent, args, context, resolveInfo) => {
                 return joinMonster(resolveInfo, {}, sql => {
                     return client.query(sql);
