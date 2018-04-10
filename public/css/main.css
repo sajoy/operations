@@ -202,8 +202,7 @@ body {
         expenses section
 */
 [data-content="expenses"] {
-  padding-bottom: 0;
-  display: none; }
+  padding-bottom: 0; }
 
 [data-content="expenses"] button {
   border: none;
@@ -221,6 +220,9 @@ body {
 [data-content="expenses"] ul li {
   line-height: 24px;
   font-size: .85rem; }
+  [data-content="expenses"] ul li p {
+    display: inline;
+    margin: 0 5px; }
 
 [data-content="expenses"] ul .dollars {
   background-color: var(--black-color);

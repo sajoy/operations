@@ -16,16 +16,26 @@ class Day {
 
         const activities = day.querySelector('[data-content="tasks"] ul');
         const activityTemplate = document.querySelector('#activity-template');
-
+        
         this.activities.forEach(activity => {
             // set innerHTML so can setAttribute
             const ele = document.createElement('li');
             ele.innerHTML = activityTemplate.innerHTML;
-
+            
             ele.setAttribute('data-category', activity.category);
             ele.innerHTML = activity.description;
-
+            
             activities.appendChild(ele);
+        });
+
+        const expenses = day.querySelector('[data-content="expenses"] ul');
+        const expenseTemplate = document.querySelector('#expense-template');
+
+        this.expenses.forEach(expense => {
+            const ele = document.importNode(expenseTemplate.content, true);
+            ele.querySelector('span.dollars').textContent = expense.amount;
+            ele.querySelector('p').textContent = expense.description;
+            expenses.appendChild(ele);
         });
 
         calendar.prepend(day);

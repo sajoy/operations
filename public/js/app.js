@@ -60,7 +60,12 @@ class App {
                         activities {
                             description
                             category
-                        } 	
+                        }
+                        expenses {
+                            description
+                            amount
+                            category
+                        }
                     }
                 }`
             })

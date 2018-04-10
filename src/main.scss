@@ -268,7 +268,7 @@ content: '💩';
 
 [data-content="expenses"] {
     padding-bottom: 0;
-    display: none;
+    // display: none;
 }
 
 [data-content="expenses"] button {
@@ -289,6 +289,11 @@ content: '💩';
 [data-content="expenses"] ul li {
     line-height: 24px;
     font-size: .85rem;
+
+    p {
+        display: inline;
+        margin: 0 5px;
+    }
 }
 
 [data-content="expenses"] ul .dollars {
