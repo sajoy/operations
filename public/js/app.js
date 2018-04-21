@@ -43,6 +43,10 @@ class App {
         });
 
         this.focusEle = document.querySelector('[data-content="focus"] h1');
+        this.focusEle.addEventListener('blur', (e) => {
+            this.localData.set('focus', e.target.textContent);
+        });
+
         this.loadLocalData();
     }
 
