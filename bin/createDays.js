@@ -53,7 +53,7 @@ function getWeekId (id) {
                     client.query(`INSERT INTO operations.week DEFAULT VALUES RETURNING id`)
                         .then(data => resolve(data.rows[0].id))
                         .catch(reject);
-                }    
+                }
             })
             .catch(reject);
     });
