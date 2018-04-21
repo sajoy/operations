@@ -76,3 +76,5 @@ class Days {
         this.list = data[days].map(day => new Day(day));
     }
 }
+
+export default Days;

@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
     "start": "concurrently -k \"npm run sassify\" \"nodemon server.js\"",
     "sassify": "node-sass --include-path -w src/ -o public/css/"
   },
@@ -17,7 +18,9 @@
   "devDependencies": {
     "concurrently": "^3.5.1",
     "node-sass": "^4.8.3",
-    "nodemon": "^1.17.2"
+    "nodemon": "^1.17.2",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.15"
   },
   "dependencies": {
     "body-parser": "^1.18.2",

@@ -8,3 +8,5 @@ class LocalData {
         localStorage[key] = JSON.stringify(value);
     }
 }
+
+export default LocalData;

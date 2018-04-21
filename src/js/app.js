@@ -1,22 +1,6 @@
-class Totals {
-    constructor (timeFrame, id) {
-        this.id = id;
-        this.timeFrame = timeFrame;
-
-        const expenseNodes = document.querySelectorAll(`[data-${timeFrame}="${id}"] .dollars`);
-        this.expenseNodes = [...expenseNodes];
-    }
-
-    calculate () {
-        const total = this.expenseNodes.reduce((acc, curr) => acc + parseFloat(curr.textContent.slice(1)), 0);
-        return total.toFixed(2);
-    }
-
-    display () {
-        const ele = document.querySelector(`[data-content="${this.timeFrame}-total"]`);
-        ele.textContent = this.calculate();
-    }
-}
+import Days from './Days';
+import Totals from './Totals';
+import LocalData from './localStorage';
 
 class App {
     constructor (week, month) {
@@ -110,6 +94,4 @@ class App {
     }
 }
 
-// ??? How to deal with ~time~
-const app = new App(11, 2);
-
+export default App;
