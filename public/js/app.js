@@ -24,6 +24,7 @@ class App {
         this.month = month;
 
         this.settingsOpen = false;
+        this.localData = new LocalData();
 
         this.initView();
         
@@ -40,12 +41,30 @@ class App {
             this.settingsOpen = !this.settingsOpen;
             this.toggleSettings();
         });
+
+        this.focusEle = document.querySelector('[data-content="focus"] h1');
+        this.loadLocalData();
+    }
+
+    loadLocalData () {
+        this.loadFocus();
+    }
+
+    loadFocus () {
+        try {
+            this.localData.get('focus');
+        }
+        catch (err) {
+            this.localData.set('focus',  'be intentional');
+        }
+
+        this.focusEle.textContent = this.localData.get('focus');
     }
 
 
     fetchDays () {
         this.days = new Days();
-        const dataEndPoint = 'http://localhost:3000/graphql'
+        const dataEndPoint = 'http://localhost:3000/graphql';
         fetch(dataEndPoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -88,4 +107,5 @@ class App {
 }
 
 // ??? How to deal with ~time~
-const app = new App(6, 2);
+const app = new App(11, 2);
+
