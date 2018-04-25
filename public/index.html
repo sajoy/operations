@@ -33,10 +33,16 @@
             </section>
             <button id="menu-toggle"></button>
             <section data-content="focus">
-                <h1 contenteditable="true">focus</h1>
+                <h1 contenteditable="true" spellcheck="false">focus</h1>
             </section>
         </section>
         <section id="calendar">
+            <template id="activity-template">
+                <li data-category="category">description</li>
+            </template>
+            <template id="expense-template">
+                <li><span class="dollars">DD.CC</span><p class="description">description</p></li>
+            </template>
             <template id="day-template">
                 <article class="day" data-week="0" data-month="0">
                     <header>
@@ -44,19 +50,15 @@
                         <h2>MM/DD</h2>
                     </header>
                     <section data-content="tasks">
-                        <ul>
-                            <li data-category="category">description</li>
-                        </ul>
+                        <ul></ul>
                     </section>
                     <section data-content="expenses">
                         <button>$0</button>
-                        <ul>
-                            <li><span class="dollars">DD.CC</span> description</li>
-                        </ul>
+                        <ul></ul>
                     </section>
                 </article>
             </template>
         </section>
-        <script src="js/app.js"></script>
+        <script src="bundle.js"></script>
     </body>
 </html>

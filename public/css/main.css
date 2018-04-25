@@ -112,10 +112,10 @@ body {
 */
 #calendar {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
-
-.today {
-  grid-column-start: 3; }
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  background-color: var(--lavender-color); }
+  #calendar article:first-child {
+    grid-column-start: 3; }
 
 /*
          day styles
@@ -220,6 +220,9 @@ body {
 [data-content="expenses"] ul li {
   line-height: 24px;
   font-size: .85rem; }
+  [data-content="expenses"] ul li p {
+    display: inline;
+    margin: 0 5px; }
 
 [data-content="expenses"] ul .dollars {
   background-color: var(--black-color);
