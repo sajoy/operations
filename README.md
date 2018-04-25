@@ -1,6 +1,10 @@
 # Operations
 
-To track expsenses, food and perishable inventory, and daily accomplishments.
+To track daily activities and expenses for reflection.
+
+## TO DEV
+1. `npm start` to start it up
+1. needs a `.env` file with `CONNSTRING` var for your local database
 
 ## TODOS
 1. <s>style a basic "day" template.</s>
@@ -12,7 +16,10 @@ To track expsenses, food and perishable inventory, and daily accomplishments.
         1. <s>reverse chrono the days (is hardcoded for now)</s>
         1. <s>have "today" be centered and yesterday on its right</s>
     1. add breakpoints!
-1. Figure out how data will be structured and input.
+1. <s>Figure out how data will be structured and input.</s>
+    1. Allow updates from the client.
+1. Deploy a demo to heroku.
+1. Implement user auth?
 1. Use:
     - webpack
     - SCSS
