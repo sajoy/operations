@@ -4,16 +4,16 @@ import LocalData from './localStorage';
 
 class App {
     constructor (week, month) {
-        this.week = week;
-        this.month = month;
+        // this.week = week;
+        // this.month = months;
 
         this.settingsOpen = false;
         this.localData = new LocalData();
 
+        this.dataEndPoint = 'http://localhost:3000/graphql';
         this.initView();
         
         // get current day, week, month from server
-        
         // get all days data from server
         // TODO replace with library probably
         this.fetchDays();
@@ -52,8 +52,7 @@ class App {
 
     fetchDays () {
         this.days = new Days();
-        const dataEndPoint = 'http://localhost:3000/graphql';
-        fetch(dataEndPoint, {
+        fetch(this.dataEndPoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -76,7 +75,12 @@ class App {
             })
         })
         .then(res => res.json())
-        .then(res => this.days.load(res.data))
+        .then(res => {
+            this.days.load(res.data);
+            this.today = this.days.list[this.days.list.length - 1];
+            this.week = this.today.week;
+            this.month = this.today.month;
+        })
         .then(()=> this.displayTotals())
     }
 
