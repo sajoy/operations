@@ -8,7 +8,7 @@ class Totals {
     }
 
     calculate () {
-        const total = this.expenseNodes.reduce((acc, curr) => acc + parseFloat(curr.textContent.slice(1)), 0);
+        const total = this.expenseNodes.reduce((acc, curr) => acc + parseFloat(curr.textContent.replace(/,/g,'').slice(1)), 0);
         return total.toFixed(2);
     }
 

@@ -41,7 +41,7 @@ class Day {
             expenses.appendChild(ele);
 
 
-            total += parseFloat(expense.amount.slice(1));
+            total += parseFloat(expense.amount.replace(/,/g,'').slice(1));
         });
         day.querySelector('button').textContent = `$${total.toFixed(2)}`;
         calendar.prepend(day);
