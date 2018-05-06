@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start": "concurrently -k \"npm run sassify\" \"nodemon server.js\"",
-    "sassify": "node-sass --include-path -w src/ -o public/css/"
+    "start": "concurrently -k \"npm run sassify\" \"nodemon server.js\" \"webpack --watch\" ",
+    "sassify": "node-sass --include-path -w src/ -o public/css/",
+    "makeDay": "node bin/createDays.js"
   },
   "nodemonConfig": {
     "ext": "js css"

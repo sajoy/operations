@@ -40,7 +40,7 @@ class Day {
             ele.querySelector('p').textContent = expense.description;
             expenses.appendChild(ele);
 
-
+            // TODO add thousands ,
             total += parseFloat(expense.amount.replace(/,/g,'').slice(1));
         });
         day.querySelector('button').textContent = `$${total.toFixed(2)}`;

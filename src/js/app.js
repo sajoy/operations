@@ -4,18 +4,12 @@ import LocalData from './localStorage';
 
 class App {
     constructor (week, month) {
-        // this.week = week;
-        // this.month = months;
-
         this.settingsOpen = false;
         this.localData = new LocalData();
-
-        this.dataEndPoint = 'http://localhost:3000/graphql';
+        
         this.initView();
         
-        // get current day, week, month from server
-        // get all days data from server
-        // TODO replace with library probably
+        this.dataEndPoint = 'http://localhost:3000/graphql';
         this.fetchDays();
     }
 
