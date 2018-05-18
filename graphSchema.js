@@ -1,5 +1,6 @@
 const { GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLString, GraphQLInt } = require('graphql') ;
 const { Month, Week, Day, Activity, Expense } = require('./graphTypes.js');
+const mutation = require('./graphMutation');
 const joinMonster = require('join-monster').default;
 const escape = require('pg-escape');
 const client = require('./database.js')
@@ -131,5 +132,6 @@ const QueryRoot = new GraphQLObjectType({
 
 module.exports = new GraphQLSchema({
     description: 'Operations data schema',
-    query: QueryRoot
+    query: QueryRoot,
+    mutation: mutation
 });
