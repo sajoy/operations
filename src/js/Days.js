@@ -6,6 +6,13 @@ class Day {
         this.render();
     }
 
+    attachEditHandler () {
+        const button = this.ele.querySelector('button[data-action="edit-day"]');
+        button.addEventListener('click', () => {
+            this.ele.classList.toggle('editing');
+        });
+    }
+
     render () {
         // TODO refactor this huge baby
 
@@ -43,13 +50,14 @@ class Day {
             // TODO add thousands ,
             total += parseFloat(expense.amount.replace(/,/g,'').slice(1));
         });
-        day.querySelector('button').textContent = `$${total.toFixed(2)}`;
+        day.querySelector('button.total').textContent = `$${total.toFixed(2)}`;
         calendar.prepend(day);
 
         // grab element and update attributes because you can't when its a document fragment
         this.ele = calendar.children[0];
         this.ele.setAttribute('data-week', this.week);
         this.ele.setAttribute('data-month', this.month);
+        this.attachEditHandler();
     }
 
     setDisplayInfo () {
